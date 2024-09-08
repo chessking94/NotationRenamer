@@ -26,8 +26,8 @@ Class MainWindow
         'set initial states
         dp_StartDate.SelectedDate = Nothing
         dp_EndDate.SelectedDate = Nothing
-        tb_RenamePath.Text = toBeFormattedDefaultPath
-        tb_SavePath.Text = savePathDefault
+        tb_RenamePath.Text = toBeFormattedDefaultPath.Replace("/", "\")
+        tb_SavePath.Text = savePathDefault.Replace("/", "\")
         btn_Rename.IsEnabled = False
 
         'hide query

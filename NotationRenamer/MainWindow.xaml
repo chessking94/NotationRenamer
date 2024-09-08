@@ -11,11 +11,11 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Grid x:Name="grid_Options" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Stretch">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -25,28 +25,36 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label x:Name="label_StartDate" Content="Start Date" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1"/>
+            <Label x:Name="label_EndDate" Content="End Date" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1"/>
+            <Label x:Name="label_RenamePath" Content="To Be Formatted Path" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1"/>
+            <Label x:Name="label_SavePath" Content="Final Save Path" HorizontalAlignment="Center" Grid.Row="3" Grid.Column="1"/>
+
+            <DatePicker x:Name="dp_StartDate" HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="2"/>
+            <DatePicker x:Name="dp_EndDate" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="2"/>
+            <TextBox x:Name="tb_RenamePath" HorizontalAlignment="Stretch" Grid.Row="2" Grid.Column="2"/>
+            <TextBox x:Name="tb_SavePath" HorizontalAlignment="Stretch" Grid.Row="3" Grid.Column="2"/>
+        </Grid>
+
+        <Grid x:Name="grid_Buttons" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Label x:Name="label_StartDate" Content="Start Date" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="2"/>
-            <Label x:Name="label_EndDate" Content="End Date" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="2"/>
-            <Label x:Name="label_RenamePath" Content="To Be Formatted Path" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="2"/>
-            <Label x:Name="label_SavePath" Content="Final Save Path" HorizontalAlignment="Center" Grid.Row="3" Grid.Column="2"/>
+            <Button Content="Refresh" x:Name="btn_Refresh" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+            <Button Content="Reset" x:Name="btn_Reset" Grid.Column="3" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+        </Grid>        
+        
+        <DataGrid x:Name="dg_GameData" Grid.Row="2" IsReadOnly="True" HorizontalAlignment="Center" HorizontalContentAlignment="Center"/>
 
-            <DatePicker x:Name="dp_StartDate" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="3"/>
-            <DatePicker x:Name="dp_EndDate" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="3"/>
-            <TextBox x:Name="tb_RenamePath" HorizontalAlignment="Stretch" Grid.Row="2" Grid.Column="3"/>
-            <TextBox x:Name="tb_SavePath" HorizontalAlignment="Stretch" Grid.Row="3" Grid.Column="3"/>
-
-            <Button Content="Refresh" x:Name="btn_Refresh" Grid.Row="4" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
-            <Button Content="Reset" x:Name="btn_Reset" Grid.Row="4" Grid.Column="4" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
-        </Grid>
-
-        <DataGrid x:Name="dg_GameData" Grid.Row="1" IsReadOnly="True" HorizontalAlignment="Center" HorizontalContentAlignment="Center"/>
-
-        <Button Content="Rename" x:Name="btn_Rename" Grid.Row="2" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+        <Button Content="Rename" x:Name="btn_Rename" Grid.Row="3" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
     </Grid>
 </Window>
