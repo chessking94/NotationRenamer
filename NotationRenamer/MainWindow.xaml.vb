@@ -9,7 +9,11 @@ Class MainWindow
     Private toBeFormattedDefaultPath As String
 
     Private Sub WindowLoaded() Handles Me.Loaded, btn_Reset.Click
+#If DEBUG Then
         Dim projectDir As String = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\.."))
+#Else
+        Dim projectDir As String = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ".."))
+#End If
         Dim configFile As String = Path.Combine(projectDir, "appsettings.json")
         myConfig.configFile = configFile
 
