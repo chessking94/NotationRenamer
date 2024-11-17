@@ -1,5 +1,6 @@
 ﻿Imports System.Data
 Imports System.IO
+Imports System.Windows.Forms
 Imports Microsoft.Data.SqlClient
 
 Class MainWindow
@@ -12,9 +13,11 @@ Class MainWindow
 #If DEBUG Then
         'three directories above exe
         Dim projectDir As String = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\.."))
+        Dim connectionString As String = Environment.GetEnvironmentVariable("ConnectionStringDebug")
 #Else
         'one directory above exe
         Dim projectDir As String = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ".."))
+        Dim connectionString As String = Environment.GetEnvironmentVariable("ConnectionStringRelease")
 #End If
         Dim configFile As String = Path.Combine(projectDir, "appsettings.json")
         myConfig.configFile = configFile
@@ -22,8 +25,12 @@ Class MainWindow
         Dim savePathDefault As String = Path.Combine(myConfig.getConfig("savePathRootDefault"), Date.Today.Year)
         Dim toBeFormattedDefaultPath As String = myConfig.getConfig("toBeFormattedPathDefault")
 
-        Dim connectionString As String = myConfig.getConfig("connectionString")
-        db_Connection = Utilities_NetCore.Connection(connectionString)
+        If connectionString Is Nothing Then
+            MessageBox.Show("Unable to read connection string", "Connection String Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Environment.Exit(-1)
+        Else
+            db_Connection = Utilities_NetCore.Connection(connectionString)
+        End If
 
         'set initial states
         dp_StartDate.SelectedDate = Nothing
@@ -79,7 +86,7 @@ Class MainWindow
 
         If validationFailReason <> "" Then
             'validation failed
-            MessageBox.Show(validationFailReason, "Validation Failed", MessageBoxButton.OK, MessageBoxImage.Error)
+            MessageBox.Show(validationFailReason, "Validation Failed", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Else
             'refresh query to get a preview
             Dim query_text As String =
@@ -129,7 +136,7 @@ g.SiteGameID
             End If
 
             If validationFailReason <> "" Then
-                MessageBox.Show(validationFailReason, "Validation Failed", MessageBoxButton.OK, MessageBoxImage.Error)
+                MessageBox.Show(validationFailReason, "Validation Failed", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Else
                 btn_Rename.IsEnabled = True
             End If
@@ -146,10 +153,10 @@ g.SiteGameID
                 ctr += 1
             Next
             btn_Rename.IsEnabled = False
-            MessageBox.Show("Rename complete", "Result", MessageBoxButton.OK, MessageBoxImage.Information)
+            MessageBox.Show("Rename complete", "Result", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
         Catch ex As Exception
-            MessageBox.Show(ex.Message, "Result", MessageBoxButton.OK, MessageBoxImage.Error)
+            MessageBox.Show(ex.Message, "Result", MessageBoxButtons.OK, MessageBoxIcon.Error)
 
         End Try
     End Sub

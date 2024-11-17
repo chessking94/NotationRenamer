@@ -27,6 +27,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <Label x:Name="label_StartDate" Content="Start Date" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1"/>
@@ -36,8 +37,8 @@
 
             <DatePicker x:Name="dp_StartDate" HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="2"/>
             <DatePicker x:Name="dp_EndDate" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="2"/>
-            <TextBox x:Name="tb_RenamePath" HorizontalAlignment="Stretch" Grid.Row="2" Grid.Column="2"/>
-            <TextBox x:Name="tb_SavePath" HorizontalAlignment="Stretch" Grid.Row="3" Grid.Column="2"/>
+            <TextBox x:Name="tb_RenamePath" HorizontalAlignment="Stretch" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2"/>
+            <TextBox x:Name="tb_SavePath" HorizontalAlignment="Stretch" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2"/>
         </Grid>
 
         <Grid x:Name="grid_Buttons" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch">
