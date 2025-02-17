@@ -101,12 +101,12 @@ g.RoundNum,
 CASE g.Result WHEN 0.5 THEN '0.5-0.5' WHEN 1 THEN '1-0' WHEN 0 THEN '0-1' END AS Result,
 CONVERT(varchar(8), g.GameDate, 112) + '.' + CONVERT(varchar(2), g.RoundNum) + SPACE(1) + wp.LastName + '-' + bp.LastName + SPACE(1) + '(' + (CASE g.Result WHEN 0.5 THEN '0.5-0.5' WHEN 1 THEN '1-0' WHEN 0 THEN '0-1' END) + ')' AS 'File Name'
 
-FROM lake.Games g
-JOIN dim.Sources s ON
+FROM ChessWarehouse.lake.Games g
+JOIN ChessWarehouse.dim.Sources s ON
 	g.SourceID = s.SourceID
-JOIN dim.Players wp ON
+JOIN ChessWarehouse.dim.Players wp ON
 	g.WhitePlayerID = wp.PlayerID
-JOIN dim.Players bp	ON
+JOIN ChessWarehouse.dim.Players bp	ON
 	g.BlackPlayerID = bp.PlayerID
 
 WHERE s.SourceName = 'Personal'
