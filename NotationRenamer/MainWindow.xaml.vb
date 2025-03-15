@@ -102,18 +102,14 @@ CASE g.Result WHEN 0.5 THEN '0.5-0.5' WHEN 1 THEN '1-0' WHEN 0 THEN '0-1' END AS
 CONVERT(varchar(8), g.GameDate, 112) + '.' + CONVERT(varchar(2), g.RoundNum) + SPACE(1) + wp.LastName + '-' + bp.LastName + SPACE(1) + '(' + (CASE g.Result WHEN 0.5 THEN '0.5-0.5' WHEN 1 THEN '1-0' WHEN 0 THEN '0-1' END) + ')' AS 'File Name'
 
 FROM ChessWarehouse.lake.Games g
-JOIN ChessWarehouse.dim.Sources s ON
-	g.SourceID = s.SourceID
-JOIN ChessWarehouse.dim.Players wp ON
-	g.WhitePlayerID = wp.PlayerID
-JOIN ChessWarehouse.dim.Players bp	ON
-	g.BlackPlayerID = bp.PlayerID
+JOIN ChessWarehouse.dim.Sources s ON g.SourceID = s.SourceID
+JOIN ChessWarehouse.dim.Players wp ON g.WhitePlayerID = wp.PlayerID
+JOIN ChessWarehouse.dim.Players bp ON g.BlackPlayerID = bp.PlayerID
 
 WHERE s.SourceName = 'Personal'
 AND g.GameDate BETWEEN @startDate AND @endDate
 
-ORDER BY
-g.SiteGameID
+ORDER BY g.SiteGameID
 "
             Using command As New SqlCommand
                 command.Connection = db_Connection
@@ -144,21 +140,36 @@ g.SiteGameID
     End Sub
 
     Private Sub RenameNotationCopies() Handles btn_Rename.Click
-        Try
-            Dim ctr As Integer = 0
-            Dim files As String() = Directory.GetFiles(tb_RenamePath.Text)  'assumption is this returns a sorted String() value
-            For Each game In dg_GameData.Items
-                Dim newName = game.Row.ItemArray(7) & Path.GetExtension(files(ctr))
-                File.Move(files(ctr), Path.Combine(tb_SavePath.Text, newName))
-                ctr += 1
-            Next
+        'confirm the filenames are valid
+        Dim isValidated As Boolean = True
+        For Each game In dg_GameData.Items
+            'the only way a file name would be invalid would be if the round number is missing, which would make the query return a null value
+            If IsDBNull(game.Row.ItemArray(7)) Then
+                isValidated = False
+                Exit For
+            End If
+        Next
+
+        If isValidated Then
+            Try
+                Dim ctr As Integer = 0
+                Dim files As String() = Directory.GetFiles(tb_RenamePath.Text)  'assumption is this returns a sorted String() value
+                For Each game In dg_GameData.Items
+                    Dim newName = game.Row.ItemArray(7) & Path.GetExtension(files(ctr))
+                    File.Move(files(ctr), Path.Combine(tb_SavePath.Text, newName))
+                    ctr += 1
+                Next
+                btn_Rename.IsEnabled = False
+                MessageBox.Show("Rename complete", "Result", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+            Catch ex As Exception
+                MessageBox.Show(ex.Message, "Result", MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+            End Try
+        Else
             btn_Rename.IsEnabled = False
-            MessageBox.Show("Rename complete", "Result", MessageBoxButtons.OK, MessageBoxIcon.Information)
-
-        Catch ex As Exception
-            MessageBox.Show(ex.Message, "Result", MessageBoxButtons.OK, MessageBoxIcon.Error)
-
-        End Try
+            MessageBox.Show("Invalid file name(s) present!", "Result", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
     End Sub
 
     Private Sub WindowClosed() Handles Me.Closed
